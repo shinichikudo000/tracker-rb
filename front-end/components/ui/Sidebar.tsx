@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { HiHome } from "react-icons/hi"
 import { BiSearch } from "react-icons/bi"
 import { IoIosAddCircle } from "react-icons/io"
+import { BiLogOut } from "react-icons/bi";
 import SidebarItem from "./SidebarItem"
 
 export default function Sidebar() {
@@ -31,6 +32,12 @@ export default function Sidebar() {
             href: '/new'
         }
     ], [])
+
+    const logout = {
+        icon: BiLogOut,
+        label: 'Log Out',
+        href: '/sign-in'
+    }
     return (
         <Box className="
             hidden 
@@ -39,6 +46,7 @@ export default function Sidebar() {
             w-[200px]
             font-latin
             text-lg
+            relative
         ">
             <div className="
                 w-full
@@ -51,6 +59,9 @@ export default function Sidebar() {
             {
                 routes.map((item) => ( <SidebarItem  key={item.label} {...item}/>))
             }
+                <div className="absolute bottom-4">
+                    <SidebarItem  key={logout.label} {...logout}/>
+                </div>
             </div>
         </Box>
     )

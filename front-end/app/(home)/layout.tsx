@@ -10,14 +10,14 @@ export default function HomeLayout({
 }: {
     children: React.ReactNode
 }) {
-    const token = useUserStore((state) => state.token);
-    const router = useRouter();
+    const token = useUserStore((state) => state.token)
+    const router = useRouter()
 
     useEffect(() => {
         if (token === null) {
-            router.replace('/sign-in');
+            router.replace('/sign-in')
         }
-    }, [token, router]);
+    }, [token, router])
 
     return (
         token !== null && (

@@ -16,11 +16,20 @@ import {
 import { Input } from "@/components/ui/input"
 import { signInFormSchema } from "@/app/_helper-functions/types"
 import { signInPost } from "@/app/_helper-functions/api"
-import { userData } from "@/app/_helper-functions/store"
+import { useUserStore, userData } from "@/app/_helper-functions/store"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
  
 export default function SignInForm() {
-  const router = useRouter()
+  const token = useUserStore((state) => state.token)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (token !== null) {
+            router.replace('/')
+        }
+    }, [token, router])
+
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -46,38 +55,40 @@ export default function SignInForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input type="email" placeholder="email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="w-full flex justify-center">
-            <Button type="submit" size='lg'>Submit</Button>
-        </div>
-      </form>
-    </Form>
+    token === null && (
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="email" placeholder="email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="w-full flex justify-center">
+              <Button type="submit" size='lg'>Submit</Button>
+          </div>
+        </form>
+      </Form>
+    )
   )
 }

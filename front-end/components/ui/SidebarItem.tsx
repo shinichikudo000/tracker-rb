@@ -1,3 +1,4 @@
+import { useUserStore } from "@/app/_helper-functions/store";
 import Link from "next/link";
 import { IconType } from "react-icons"
 import { twMerge } from "tailwind-merge";
@@ -13,8 +14,16 @@ export default function SidebarItem({
     active?: boolean;
     href: string
 }) {
+    const handleLogout = () => {
+        useUserStore.setState((prevState) => ({
+            ...prevState,
+            token: null,
+            refresh_token: null,
+            resource_owner: null
+        }))
+    }
     return (
-        <Link href={href} className={twMerge(`
+        <Link href={href} onClick={label === 'Log Out' ? handleLogout : undefined} className={twMerge(`
             flex
             flex-row
             h-auto
