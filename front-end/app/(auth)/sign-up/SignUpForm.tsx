@@ -14,8 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signInFormSchema, signUpFormSchema } from "@/app/_helper-functions/types"
+import { signUpFormSchema } from "@/app/_helper-functions/types"
 import { signUpPost } from "@/app/_helper-functions/api"
+import { userData } from "@/app/_helper-functions/store"
  
 
 
@@ -35,6 +36,7 @@ export default function SignUpForm() {
         if (res.ok) {
             const data = await res.json();
             console.log(data);
+            userData(data)
             const { token, resource_owner } = data;
             console.log("Token:", token);
             console.log("User Information:", resource_owner);

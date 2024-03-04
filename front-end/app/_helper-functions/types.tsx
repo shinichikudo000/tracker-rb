@@ -12,15 +12,14 @@ export const signUpFormSchema = z.object({
 })
 
 export interface UserType {
-    token: string;
-    refresh_token: string;
-    resource_owner: ResourceOwnerType;
-
+    token?: string | null;
+    refresh_token?: string | null;
+    resource_owner?: ResourceOwnerType | null;
 }
 
 export interface ResourceOwnerType {
-    created_at: string;
-    email: string;
-    id: number;
-    updated_at: string
+    created_at?: string | null;
+    email?: string | null;
+    id?: number | null;
+    updated_at?: string | null
 }

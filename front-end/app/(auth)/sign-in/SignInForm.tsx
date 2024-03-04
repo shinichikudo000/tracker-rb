@@ -14,11 +14,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { UserType, signInFormSchema } from "@/app/_helper-functions/types"
+import { signInFormSchema } from "@/app/_helper-functions/types"
 import { signInPost } from "@/app/_helper-functions/api"
-import { useUserStore } from "@/app/_helper-functions/store"
+import { userData } from "@/app/_helper-functions/store"
+import { useRouter } from "next/navigation"
  
 export default function SignInForm() {
+  const router = useRouter()
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -26,10 +28,6 @@ export default function SignInForm() {
       password: ""
     },
   })
-
-  function userData(data: UserType) {
-    useUserStore((state) => state.user = data)
-  }
  
   async function onSubmit(values: z.infer<typeof signInFormSchema>) {
     try {
@@ -37,9 +35,7 @@ export default function SignInForm() {
         if (res.ok) {
             const data = await res.json()
             userData(data)
-            console.log(data)
-            localStorage.setItem('auth-token', JSON.stringify(data.token))
-            localStorage.setItem('refresh-token', JSON.stringify(data.refresh_token))
+            router.replace('/')
           } else {
 
             throw new Error(`Failed to sign in: ${res.status}`);

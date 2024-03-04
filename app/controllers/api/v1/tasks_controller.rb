@@ -1,4 +1,5 @@
 class Api::V1::TasksController < ApplicationController
+  before_action :user
   before_action :set_task, only: %i[ show update destroy ]
 
   # GET /tasks
@@ -39,9 +40,18 @@ class Api::V1::TasksController < ApplicationController
   end
 
   private
+    def user
+      token = current_devise_api_token
+      user_id = token['resource_owner_id']
+      @user = User.find_by(id: user_id)
+
+      if @user.nil?
+        render json: { error: 'Invalid token' }, status: :unprocessable_entity
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params[:id])
+      @task = @user.task.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
