@@ -22,3 +22,4 @@ export default function RootLayout({
     </html>
   );
 }
+//redirect to sign up page if the user doesnt exist

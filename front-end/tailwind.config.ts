@@ -19,7 +19,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        header: ['Passion One']
+        header: ['Passion One'],
+        latin:  ['Anek Latin']
       },
       colors: {
         border: "hsl(var(--border))",

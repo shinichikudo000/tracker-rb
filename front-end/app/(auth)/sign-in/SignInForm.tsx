@@ -14,10 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signInFormSchema } from "@/app/_helper-functions/types"
+import { UserType, signInFormSchema } from "@/app/_helper-functions/types"
 import { signInPost } from "@/app/_helper-functions/api"
- 
-
+import { useUserStore } from "@/app/_helper-functions/store"
  
 export default function SignInForm() {
   const form = useForm<z.infer<typeof signInFormSchema>>({
@@ -27,16 +26,20 @@ export default function SignInForm() {
       password: ""
     },
   })
+
+  function userData(data: UserType) {
+    useUserStore((state) => state.user = data)
+  }
  
   async function onSubmit(values: z.infer<typeof signInFormSchema>) {
     try {
         const res = await signInPost(values)
         if (res.ok) {
-            const data = await res.json();
-            console.log(data);
-            const { token, resource_owner } = data;
-            console.log("Token:", token);
-            console.log("User Information:", resource_owner);
+            const data = await res.json()
+            userData(data)
+            console.log(data)
+            localStorage.setItem('auth-token', JSON.stringify(data.token))
+            localStorage.setItem('refresh-token', JSON.stringify(data.refresh_token))
           } else {
 
             throw new Error(`Failed to sign in: ${res.status}`);
