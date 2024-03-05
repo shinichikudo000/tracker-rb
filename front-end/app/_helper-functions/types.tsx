@@ -23,3 +23,15 @@ export interface ResourceOwnerType {
     id?: number | null;
     updated_at?: string | null
 }
+
+export interface CategoryType {
+    created_at: string;
+    id: number;
+    name: string;
+    updated_at: string;
+    user_id: number;
+}
+
+export interface TaskType {
+    
+}

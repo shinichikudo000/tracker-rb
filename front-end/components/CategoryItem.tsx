@@ -1,21 +1,17 @@
+import { CategoryType } from "@/app/_helper-functions/types"
 import {
-    Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
   
-export default function CategoryItem() {
+export default function CategoryItem({category} : {category: CategoryType}) {
     return (
-        <div>
-            <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                    <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                    <AccordionContent>
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
-        </div>
+        <AccordionItem value={`category-${category.id}`}>
+            <AccordionTrigger>{category.name}</AccordionTrigger>
+            <AccordionContent>
+                Yes. It adheres to the WAI-ARIA design pattern.
+            </AccordionContent>
+        </AccordionItem>
     )
 }
