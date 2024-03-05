@@ -18,15 +18,22 @@ import { signInFormSchema } from "@/app/_helper-functions/types"
 import { signInPost } from "@/app/_helper-functions/api"
 import { useUserStore, userData } from "@/app/_helper-functions/store"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
  
 export default function SignInForm() {
   const token = useUserStore((state) => state.token)
-    const router = useRouter()
+  const router = useRouter()
+  const {toast} = useToast()
+  const [error, setError] = useState('')
 
     useEffect(() => {
         if (token !== null) {
             router.replace('/')
+            toast({
+              title: "Please Log-in or Sign-up first!",
+              description: "You are currently not logged in",
+            })
         }
     }, [token, router])
 
@@ -45,8 +52,12 @@ export default function SignInForm() {
             const data = await res.json()
             userData(data)
             router.replace('/')
+            toast({
+              title: "Welcome to Task Tracker!",
+              description: "You are now currently signed in",
+            })
           } else {
-
+            setError("Invalid email or password")
             throw new Error(`Failed to sign in: ${res.status}`);
           }
     } catch(e) {
@@ -80,7 +91,7 @@ export default function SignInForm() {
                 <FormControl>
                   <Input type="password" placeholder="password" {...field} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>{error}</FormMessage>
               </FormItem>
             )}
           />

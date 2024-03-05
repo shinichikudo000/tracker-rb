@@ -19,16 +19,22 @@ import { signUpPost } from "@/app/_helper-functions/api"
 import { useUserStore, userData } from "@/app/_helper-functions/store"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { useToast } from "@/components/ui/use-toast"
  
 
 
 export default function SignUpForm() {
   const token = useUserStore((state) => state.token)
-    const router = useRouter()
+  const router = useRouter()
+  const { toast } = useToast()
 
     useEffect(() => {
         if (token !== null) {
             router.replace('/')
+            toast({
+              title: "Please Log-in or Sign-up first!",
+              description: "You are currently not logged in",
+            })
         }
     }, [token, router])
     
@@ -46,13 +52,12 @@ export default function SignUpForm() {
         const res = await signUpPost(values)
         if (res.ok) {
             const data = await res.json();
-            console.log(data);
             userData(data)
-            const { token, resource_owner } = data;
-            console.log("Token:", token);
-            console.log("User Information:", resource_owner);
+            toast({
+              title: "Welcome to Task Tracker!",
+              description: "Thank you for creating an account",
+            })
           } else {
-
             throw new Error(`Failed to sign in: ${res.status}`);
           }
     } catch(e) {
