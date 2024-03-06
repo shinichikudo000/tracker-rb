@@ -30,8 +30,19 @@ export interface CategoryType {
     name: string;
     updated_at: string;
     user_id: number;
+    tasks?: TaskType[] | null
 }
 
 export interface TaskType {
+    id: number;
+    category_id: number;
+    user_id: number;
+}
 
+export interface TodoStore {
+    categories: CategoryType[] | null;
+    setCategories: (categories: CategoryType[] | null) => void;
+    setTasks: (tasks: TaskType[]) => void;
+    deleteCategory: (categoryId: number) => void;
+    deleteTask: (categoryId: number, taskId: number) => void;
 }

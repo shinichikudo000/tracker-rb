@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { UserType } from './types'
+import { UserType, TodoStore, TaskType } from './types'
 
 export const useUserStore = create<UserType>(() => ({
   token: null,
@@ -22,3 +22,49 @@ export function userData(data: UserType) {
     },
   }));
 }
+
+export const useTodoStore = create<TodoStore>((set) => ({
+  categories: null,
+  setCategories: (categories) => set({ categories }),
+  setTasks: (tasks) => {
+    set((state) => {
+        const tasksByCategory: Record<number, TaskType[]> = {}
+        tasks.forEach((task) => {
+          if (tasksByCategory[task.category_id]) {
+            tasksByCategory[task.category_id].push(task)
+          } else {
+            tasksByCategory[task.category_id] = [task]
+          }
+        })
+        const updatedCategories = state.categories?.map((category) => {
+          if (tasksByCategory[category.id]) {
+            return {
+              ...category,
+              tasks: tasksByCategory[category.id],
+            }
+          }
+          return category
+        })
+
+        return { categories: updatedCategories ?? null };
+      })
+    },
+  deleteCategory: (categoryId) => {
+    set((state) => ({
+      categories: state.categories?.filter((category) => category.id !== categoryId)
+    }))
+  },
+  deleteTask: (categoryId, taskId) => {
+    set((state) => ({
+      categories: state.categories?.map((category) => {
+        if(category.id === categoryId) {
+          return {
+            ...category,
+            tasks: category.tasks?.filter((task) => task.id !== taskId) ?? []
+          }
+        }
+        return category
+      }) ?? null
+    }))
+  }
+}))

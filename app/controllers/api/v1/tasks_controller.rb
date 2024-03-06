@@ -3,10 +3,15 @@ class Api::V1::TasksController < ApplicationController
   before_action :set_task, only: %i[ show update destroy ]
 
   # GET /tasks
-  def index
+  def tasks
     @tasks = Task.all
 
     render json: @tasks
+  end
+
+  # GET /categories/:id/tasks
+  def index
+    
   end
 
   # GET /tasks/1

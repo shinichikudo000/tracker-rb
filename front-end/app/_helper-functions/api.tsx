@@ -39,7 +39,7 @@ export async function getCategories(token: string) {
     return res
 }
 
-export async function getSpecificCategories(id: string, token: string) {
+export async function getSpecificCategories(id: number, token: string) {
     const res = await fetch(`${API_URL}/categories/${id}`, {
         method: "POST",
         headers: {
@@ -47,8 +47,27 @@ export async function getSpecificCategories(id: string, token: string) {
             "Authorization": `Bearer ${token}`
         },
     })
+    return res
 }
 
-export async function getTask() {
+export async function deleteCategory(id:number, token:string) {
+    const res = await fetch(`${API_URL}/categories/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    return res
+}
 
+export async function getTasks(token: string) {
+    const res = await fetch(`${API_URL}/tasks`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    return res
 }
