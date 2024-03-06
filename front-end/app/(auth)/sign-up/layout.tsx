@@ -14,10 +14,8 @@ export default function SignInLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-      </body>
-    </html>
+    <section className="flex justify-center align-center w-full h-full">
+      {children}
+    </section>
   );
 }
