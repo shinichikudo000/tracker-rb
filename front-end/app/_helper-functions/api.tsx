@@ -73,6 +73,18 @@ export async function editCategory(values: z.infer<typeof CategoryFormSchema>, i
     return res
 }
 
+export async function postCategory(values: z.infer<typeof CategoryFormSchema>, token: string) {
+    const res = await fetch(`${API_URL}/categories/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(values)
+    })
+    return res
+}
+
 export async function getTasks(token: string) {
     const res = await fetch(`${API_URL}/tasks`, {
         method: "GET",

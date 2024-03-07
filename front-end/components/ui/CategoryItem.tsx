@@ -26,7 +26,7 @@ import { IoMdClose } from "react-icons/io"
 export default function CategoryItem({category} : {category: CategoryType}) {
     const token = useUserStore((state) => state.token)
     const useDeleteCategory = useTodoStore((state) => state.deleteCategory)
-    const useSetCategory = useTodoStore((state) => state.setCategory)
+    const useEditCategory = useTodoStore((state) => state.editCategory)
     const [edit, setEdit] = useState(false)
     const form = useForm<z.infer<typeof CategoryFormSchema>>({
         resolver: zodResolver(CategoryFormSchema),
@@ -40,7 +40,8 @@ export default function CategoryItem({category} : {category: CategoryType}) {
                 const res = await editCategory(values, category.id, token)
                 if(res.ok) {
                     const data = await res.json()
-                    useSetCategory(data)
+                    useEditCategory(data.id, data)
+                    setEdit(false)
                 } else {
 
                 }

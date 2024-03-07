@@ -85,5 +85,39 @@ export const useTodoStore = create<TodoStore>((set) => ({
         return category
       }) ?? null
     }))
+  },
+  editCategory: (categoryId, values) => {
+    set((state) => ({
+      categories: state.categories?.map((category) => {
+        if (category.id === categoryId) {
+          return {
+            ...category,
+            ...values
+          }
+        }
+        return category
+      }) ?? null
+    }))
+  },
+  editTask: (categoryId, taskId, values) => {
+    set((state) => ({
+      categories: state.categories?.map((category) => {
+        if (category.id === categoryId) {
+          return {
+            ...category,
+            tasks: category.tasks?.map((task) => {
+              if (task.id === taskId) {
+                return {
+                  ...task,
+                  ...values
+                }
+              }
+              return task
+            }) ?? []
+          }
+        }
+        return category
+      }) ?? null
+    }))
   }
 }))
