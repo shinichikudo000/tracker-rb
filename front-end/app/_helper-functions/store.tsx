@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { UserType, TodoStore, TaskType } from './types'
+import { getCategories } from './api';
 
 export const useUserStore = create<UserType>(() => ({
   token: null,
@@ -61,6 +62,24 @@ export const useTodoStore = create<TodoStore>((set) => ({
           return {
             ...category,
             tasks: category.tasks?.filter((task) => task.id !== taskId) ?? []
+          }
+        }
+        return category
+      }) ?? null
+    }))
+  },
+  setCategory: (newCategory) => {
+    set((state) => ({
+      categories: state.categories ? [...state.categories, newCategory] : [newCategory]
+    }))
+  },
+  setTask: (categoryId, newTask) => {
+    set((state) => ({
+      categories: state.categories?.map((category) => {
+        if (category.id === categoryId) {
+          return {
+            ...category,
+            tasks: category.tasks ? [...category.tasks, newTask] : [newTask]
           }
         }
         return category

@@ -1,5 +1,5 @@
 import { useUserStore } from "./store";
-import { signInFormSchema } from "./types";
+import { CategoryFormSchema, signInFormSchema } from "./types";
 import { z } from "zod"
 
 export const API_URL_SIGN_IN = 'http://127.0.0.1:4000/users/tokens/sign_in'
@@ -61,13 +61,14 @@ export async function deleteCategory(id:number, token:string) {
     return res
 }
 
-export async function editCategory(id:number, token:string) {
+export async function editCategory(values: z.infer<typeof CategoryFormSchema>, id:number, token:string) {
     const res = await fetch(`${API_URL}/categories/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
+        body: JSON.stringify(values)
     })
     return res
 }

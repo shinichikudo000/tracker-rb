@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteCategory } from "@/app/_helper-functions/api"
+import { deleteCategory, editCategory } from "@/app/_helper-functions/api"
 import { useTodoStore, useUserStore } from "@/app/_helper-functions/store"
 import { CategoryFormSchema, CategoryType } from "@/app/_helper-functions/types"
 import { Input } from "@/components/ui/input"
@@ -26,6 +26,7 @@ import { IoMdClose } from "react-icons/io"
 export default function CategoryItem({category} : {category: CategoryType}) {
     const token = useUserStore((state) => state.token)
     const useDeleteCategory = useTodoStore((state) => state.deleteCategory)
+    const useSetCategory = useTodoStore((state) => state.setCategory)
     const [edit, setEdit] = useState(false)
     const form = useForm<z.infer<typeof CategoryFormSchema>>({
         resolver: zodResolver(CategoryFormSchema),
@@ -34,6 +35,21 @@ export default function CategoryItem({category} : {category: CategoryType}) {
         }
     })
     async function onSubmit(values: z.infer<typeof CategoryFormSchema>) {
+        try {
+            if(token) {
+                const res = await editCategory(values, category.id, token)
+                if(res.ok) {
+                    const data = await res.json()
+                    useSetCategory(data)
+                } else {
+
+                }
+            } else {
+
+            }
+        } catch(e) {
+            console.log(e)
+        }
     }
     return (
         <AccordionItem value={`category-${category.id}`}>

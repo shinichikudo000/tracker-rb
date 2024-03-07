@@ -49,4 +49,6 @@ export interface TodoStore {
     setTasks: (tasks: TaskType[]) => void;
     deleteCategory: (categoryId: number) => void;
     deleteTask: (categoryId: number, taskId: number) => void;
+    setCategory: (newCategory: CategoryType) => void;
+    setTask: (categoryId: number, newTask: TaskType) => void
 }
