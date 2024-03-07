@@ -2,16 +2,17 @@ class Api::V1::TasksController < ApplicationController
   before_action :user
   before_action :set_task, only: %i[ show update destroy ]
 
-  # GET /tasks
-  def tasks
-    @tasks = Task.all
-
-    render json: @tasks
-  end
-
   # GET /categories/:id/tasks
   def index
-    
+    def index
+      if params[:category_id]
+        category = Category.find(params[:category_id])
+        @tasks = category.tasks
+      else
+        @tasks = Task.all
+      end
+      render json: @tasks
+    end
   end
 
   # GET /tasks/1

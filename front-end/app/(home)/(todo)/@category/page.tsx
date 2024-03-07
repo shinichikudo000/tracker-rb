@@ -31,7 +31,7 @@ export default function CategoryPage() {
         }
 
         fetchData()
-    }, [categories])
+    }, [])
     return (
         <div>
             <Accordion type="single" collapsible>

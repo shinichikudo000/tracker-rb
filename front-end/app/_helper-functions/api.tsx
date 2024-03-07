@@ -61,6 +61,17 @@ export async function deleteCategory(id:number, token:string) {
     return res
 }
 
+export async function editCategory(id:number, token:string) {
+    const res = await fetch(`${API_URL}/categories/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    return res
+}
+
 export async function getTasks(token: string) {
     const res = await fetch(`${API_URL}/tasks`, {
         method: "GET",

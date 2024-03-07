@@ -11,6 +11,10 @@ export const signUpFormSchema = z.object({
     'confirm-password': z.string()
 })
 
+export const CategoryFormSchema = z.object({
+    name: z.string(),
+})
+
 export interface UserType {
     token?: string | null;
     refresh_token?: string | null;
