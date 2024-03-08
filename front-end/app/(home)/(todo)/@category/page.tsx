@@ -32,6 +32,7 @@ export default function CategoryPage() {
     const token = useUserStore((state) => state.token)
     const categories = useTodoStore((state) => state.categories)
     const setCategories = useTodoStore((state) => state.setCategories)
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,6 +67,7 @@ export default function CategoryPage() {
                 if(res.ok) {
                     const data = await res.json()
                     useSetCategory(data)
+                    setOpen(false)
                 } else {
 
                 }
@@ -77,31 +79,33 @@ export default function CategoryPage() {
         }
     }
     return (
-        <div>
-            <Dialog>
-                <DialogTrigger>Add</DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                    <DialogTitle>Add New Category</DialogTitle>
-                    </DialogHeader>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input type="text" placeholder="category name" {...field} className="bg-transparent w-full text-lg"/>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                                )}
-                            />
-                        </form>
-                    </Form>
-                </DialogContent>
-            </Dialog>
+        <div className="w-full h-full">
+            <div className="flex flex-row justify-end mr-4">
+                <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger className="bg-zinc-800 text-2xl rounded-md p-2">Add</DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                        <DialogTitle>Add New Category</DialogTitle>
+                        </DialogHeader>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input type="text" placeholder="category name" {...field} className="bg-transparent w-full text-lg"/>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                    )}
+                                />
+                            </form>
+                        </Form>
+                    </DialogContent>
+                </Dialog>
+            </div>
             <Accordion type="single" collapsible>
                 {categories?.map((category) => (
                     <CategoryItem key={category.id} category={category}/>

@@ -1,5 +1,6 @@
 class Api::V1::TasksController < ApplicationController
   before_action :user
+  before_action :set_category
   before_action :set_task, only: %i[ show update destroy ]
 
   # GET /categories/:id/tasks
@@ -15,14 +16,14 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
-  # GET /tasks/1
+  # GET /categories/:id/tasks/1
   def show
     render json: @task
   end
 
-  # POST /tasks
+  # POST /categories/:id/tasks
   def create
-    @task = Task.new(task_params)
+    @task = @category.tasks.build(task_params)
 
     if @task.save
       render json: @task, status: :created, location: @task
@@ -31,7 +32,7 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /tasks/1
+  # PATCH/PUT /categories/:id/tasks/1
   def update
     if @task.update(task_params)
       render json: @task
@@ -40,7 +41,7 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
-  # DELETE /tasks/1
+  # DELETE /categories/:id/tasks/1
   def destroy
     @task.destroy!
   end
@@ -60,6 +61,10 @@ class Api::V1::TasksController < ApplicationController
       @task = @user.task.find(params[:id])
     end
 
+    def set_category
+      @category = @user.categories.find(params[:category_id])
+    end
+    
     # Only allow a list of trusted parameters through.
     def task_params
       params.require(:task).permit(:description, :due_date, :completed)

@@ -41,6 +41,9 @@ export interface TaskType {
     id: number;
     category_id: number;
     user_id: number;
+    description: string;
+    due_date: string;
+    completed: boolean;
 }
 
 export interface TodoStore {
