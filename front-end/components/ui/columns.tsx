@@ -9,6 +9,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useTaskStore, useUserStore } from "@/app/_helper-functions/store"
 import { completedTask, deleteTask, notCompletedTask } from "@/app/_helper-functions/api"
 import { useToast } from "./use-toast"
+import { Edit } from "lucide-react"
+import EditTaskForm from "./EditTaskForm"
+import { useState } from "react"
 
 export const columns: ColumnDef<TaskType>[] = [
   {
@@ -116,47 +119,47 @@ export const columns: ColumnDef<TaskType>[] = [
       const token = useUserStore((state) => state.token)
       const setDeleteTask = useTaskStore((state) => state.deleteTask)
       const { toast } = useToast()
+      const [open, setOpen] = useState(false)
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={async() => {
-              try {
-                
-              } catch(e) {
-                console.log(e)
-              }
-            }}>Edit</DropdownMenuItem> 
-            <DropdownMenuItem onClick={async() => {
-              try {
-                if(token) {
-                  const res = await deleteTask(token, taskId)
-                  if(res.ok) {
-                    setDeleteTask(taskId)
-                    toast({
-                      title: "Deleted!",
-                      description: "Successfully deleted a task",
-                    })
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => setOpen(true)}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={async() => {
+                try {
+                  if(token) {
+                    const res = await deleteTask(token, taskId)
+                    if(res.ok) {
+                      setDeleteTask(taskId)
+                      toast({
+                        title: "Deleted!",
+                        description: "Successfully deleted a task",
+                      })
+                    } else {
+
+                    }
                   } else {
 
                   }
-                } else {
-
+                } catch(e) {
+                  console.log(e)
                 }
-              } catch(e) {
-                console.log(e)
-              }
-            }}>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              }}>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <EditTaskForm task={row.original} open={open} setOpen={setOpen}/>
+        </>
       )
     },
   },

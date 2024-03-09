@@ -84,7 +84,7 @@ export default function AddNewTaskForm({category} : {category?: CategoryType}) {
 
     return (
         <div className="flex flex-row justify-end mr-4">
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open} onOpenChange={() => setOpen(!open)}>
                 <DialogTrigger className="bg-zinc-800 text-2xl rounded-md p-2">Add</DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
