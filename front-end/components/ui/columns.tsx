@@ -44,7 +44,7 @@ export const columns: ColumnDef<TaskType>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("completed")}</div>, //if false === not complete, true === completed
+    cell: ({ row }) => <div className="lowercase">{row.getValue("completed") === false ? 'Not Completed' : 'Completed'}</div>, //if false === not complete, true === completed
   },
   {
     accessorKey: "description",
@@ -69,26 +69,11 @@ export const columns: ColumnDef<TaskType>[] = [
     },
     cell: ({ row }) => <div className="lowercase">{row.getValue("due_date")}</div>,
   },
-//   {
-//     accessorKey: "amount",
-//     header: () => <div className="text-right">Amount</div>,
-//     cell: ({ row }) => {
-//       const amount = parseFloat(row.getValue("amount"))
-
-//       // Format the amount as a dollar amount
-//       const formatted = new Intl.NumberFormat("en-US", {
-//         style: "currency",
-//         currency: "USD",
-//       }).format(amount)
-
-//       return <div className="text-right font-medium">{formatted}</div>
-//     },
-//   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const taskId = row.original.id
 
       return (
         <DropdownMenu>
@@ -101,7 +86,7 @@ export const columns: ColumnDef<TaskType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {}}>Edit</DropdownMenuItem> 
+            <DropdownMenuItem onClick={() => {console.log(taskId)}}>Edit</DropdownMenuItem> 
             <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

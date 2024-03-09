@@ -60,6 +60,7 @@ export default function TaskPage() {
                     const res = await getTasks(token)
                     if (res.ok) {
                         const data = await res.json()
+                        setTasks(data)
                         console.log(data)
                     } else {
                         throw new Error(`Failed to sign in: ${res.status}`)
@@ -204,7 +205,7 @@ export default function TaskPage() {
                 </Dialog>
             </div>
             <div className="w-full h-full p-4">
-                <DataTable columns={columns} data={data} />
+                <DataTable columns={columns} data={tasks} />
             </div>
         </div>
     )
