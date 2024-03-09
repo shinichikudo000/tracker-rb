@@ -128,7 +128,7 @@ export function DataTable<TData, TValue>({
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-white">
-          {completedRowsCount} of {table.getFilteredRowModel().rows.length} row(s) selected.
+          {completedRowsCount} of {table.getFilteredRowModel().rows.length} task(s) completed
         </div>
       </div>
     </div>

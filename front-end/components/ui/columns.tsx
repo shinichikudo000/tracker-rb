@@ -8,6 +8,7 @@ import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu"
 import { useTaskStore, useUserStore } from "@/app/_helper-functions/store"
 import { completedTask, deleteTask, notCompletedTask } from "@/app/_helper-functions/api"
+import { useToast } from "./use-toast"
 
 export const columns: ColumnDef<TaskType>[] = [
   {
@@ -113,6 +114,8 @@ export const columns: ColumnDef<TaskType>[] = [
     cell: ({ row }) => {
       const taskId = row.original.id
       const token = useUserStore((state) => state.token)
+      const setDeleteTask = useTaskStore((state) => state.deleteTask)
+      const { toast } = useToast()
 
       return (
         <DropdownMenu>
@@ -137,7 +140,11 @@ export const columns: ColumnDef<TaskType>[] = [
                 if(token) {
                   const res = await deleteTask(token, taskId)
                   if(res.ok) {
-                    
+                    setDeleteTask(taskId)
+                    toast({
+                      title: "Deleted!",
+                      description: "Successfully deleted a task",
+                    })
                   } else {
 
                   }

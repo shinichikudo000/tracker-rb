@@ -30,10 +30,11 @@ export default function SignInForm() {
     useEffect(() => {
         if (token !== null) {
             router.replace('/')
-            toast({
-              title: "Please Log-in or Sign-up first!",
-              description: "You are currently not logged in",
-            })
+        } else {
+          toast({
+            title: "Please Log-in or Sign-up first!",
+            description: "You are currently not logged in",
+          })
         }
     }, [token, router])
 
