@@ -1,3 +1,4 @@
+import { ColumnDef } from "@tanstack/react-table"
 import { string, z } from "zod"
 
 export const signInFormSchema = z.object({
@@ -66,3 +67,21 @@ export interface TodoStore {
     editCategory: (categoryId: number, values: CategoryType) => void;
     editTask: (categoryId: number, taskId: number, values: TaskType) => void;
 }
+
+export const data: TaskType[] = [
+    {
+      id: 1,
+      category_id: 1,
+      user_id: 1,
+      description: 'do something',
+      due_date: '2021',
+      completed: false,
+    },
+]
+
+export interface DataTableProps<TData, TValue> {
+    columns: ColumnDef<TData, TValue>[]
+    data: TData[]
+}
+
+  

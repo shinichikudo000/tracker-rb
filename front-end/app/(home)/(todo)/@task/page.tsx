@@ -23,7 +23,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { TaskFormSchema } from "@/app/_helper-functions/types"
+import { TaskFormSchema, TaskType, data } from "@/app/_helper-functions/types"
 import { Label } from "@/components/ui/label"
 import {
     Select,
@@ -42,7 +42,9 @@ import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "@radix-ui/react-icons"
-import { format, formatISO } from "date-fns"
+import { format } from "date-fns"
+import { columns } from "@/components/ui/columns"
+import { DataTable } from "@/components/ui/data-table"
 
   
 
@@ -50,6 +52,7 @@ export default function TaskPage() {
     const token = useUserStore((state) => state.token)
     const [open, setOpen] = useState(false)
     const categories = useTodoStore((state) => state.categories)
+    const [tasks, setTasks] = useState<TaskType[]>([])
     useEffect(() => {
         const fetchData = async () => {
             if (token) {
@@ -200,7 +203,9 @@ export default function TaskPage() {
                     </DialogContent>
                 </Dialog>
             </div>
-                //content
+            <div className="w-full h-full p-4">
+                <DataTable columns={columns} data={data} />
+            </div>
         </div>
     )
 }
