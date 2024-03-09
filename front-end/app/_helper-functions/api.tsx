@@ -130,6 +130,36 @@ export async function postTask(token: string, values: z.infer<typeof TaskFormSch
     return res
 }
 
+export async function completedTask(token: string, taskId: number) {
+    
+    const res = await fetch(`${API_URL}/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            completed: true,
+        })
+    })
+    return res
+}
+
+export async function notCompletedTask(token: string, taskId: number) {
+    
+    const res = await fetch(`${API_URL}/tasks/${taskId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            completed: false,
+        })
+    })
+    return res
+}
+
 export async function editTask(taskId: number, token: string, values: any){
     const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "PUT",

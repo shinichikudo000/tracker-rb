@@ -84,4 +84,11 @@ export interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
+export interface TaskStore {
+    tasks: TaskType[] | null;
+    setTasks: (tasks: TaskType[]) => void;
+    setCompletedTask: (taskId: number) => void;
+    setNotCompletedTask: (taskId: number) => void
+}
+
   

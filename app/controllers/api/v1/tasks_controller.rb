@@ -57,7 +57,7 @@ class Api::V1::TasksController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = @user.task.find(params[:id])
+      @task = @user.tasks.find(params[:id])
     end
 
     def set_category

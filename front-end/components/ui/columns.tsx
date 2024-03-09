@@ -6,27 +6,65 @@ import { Checkbox } from "./checkbox"
 import { Button } from "./button"
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu"
+import { useTaskStore, useUserStore } from "@/app/_helper-functions/store"
+import { completedTask, notCompletedTask } from "@/app/_helper-functions/api"
 
 export const columns: ColumnDef<TaskType>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate") // when toggled will trigger edit tasks to change the completed or not the whole task under the category
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)} // when toggled will trigger edit tasks to change the specific category
-        aria-label="Select row"
-      />
-    ),
+    header: ({ table }) => {
+      const token = useUserStore((state) => state.token)
+      return (
+        <>
+        </>
+        //   <Checkbox
+        //   checked={
+        //     table.getIsAllPageRowsSelected() ||
+        //     (table.getIsSomePageRowsSelected() && "indeterminate") // when toggled will trigger edit tasks to change the completed or not the whole task under the category
+        //   }
+        //   onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        //   aria-label="Select all"
+        // />
+      )
+    },
+    cell: ({ row }) => {
+      const token = useUserStore((state) => state.token) 
+      const setCompletedTask = useTaskStore((state) => state.setCompletedTask)
+      const setNotCompletedTask = useTaskStore((state) => state.setNotCompletedTask)
+      return (
+        <Checkbox
+          checked={row.getValue("completed") || row.getIsSelected()} //if checked will trigger the completedTask fucntion and also if the row.getValue('completed') === false it is not cheked and if tru it will be cheked automatically
+          onCheckedChange={async(value) =>{
+            if(token) {
+              if (value === true) {
+                const res = await completedTask(token, row.original.id)
+                if(res.ok) {
+                  row.toggleSelected(true)
+                  row.getIsSelected()
+                  setCompletedTask(row.original.id)
+                  console.log(res)
+                } else {
+
+                }
+              } else {
+                const res = await notCompletedTask(token, row.original.id)
+                if(res.ok) {
+                  row.toggleSelected(false)
+                  row.getIsSelected()
+                  setNotCompletedTask(row.original.id)
+                  console.log(res)
+                } else {
+
+                }
+              }
+            } else {
+
+            }
+          }} 
+          aria-label="Select row"
+        />
+      )
+    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -44,7 +82,7 @@ export const columns: ColumnDef<TaskType>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("completed") === false ? 'Not Completed' : 'Completed'}</div>, //if false === not complete, true === completed
+    cell: ({ row }) => <div>{row.getValue("completed") === false ? 'Not Completed' : 'Completed'}</div>, //if false === not complete, true === completed
   },
   {
     accessorKey: "description",

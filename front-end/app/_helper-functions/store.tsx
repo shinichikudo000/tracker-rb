@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { UserType, TodoStore, TaskType } from './types'
+import { UserType, TodoStore, TaskType, TaskStore } from './types'
 import { getCategories } from './api';
 
 export const useUserStore = create<UserType>(() => ({
@@ -7,6 +7,37 @@ export const useUserStore = create<UserType>(() => ({
   refresh_token: null,
   resource_owner: null,
   //logOutUser: () => set(() => {user: null})
+}))
+
+export const useTaskStore = create<TaskStore>((set) => ({
+  tasks: null,
+  setTasks: (tasks) => set({ tasks }),
+  setCompletedTask: (taskId) => {
+    set((state) => ({
+      tasks: state.tasks?.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            completed: true
+          }
+        }
+        return task
+      }) ?? null
+    }))
+  },
+  setNotCompletedTask: (taskId) => {
+    set((state) => ({
+      tasks: state.tasks?.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            completed: false
+          }
+        }
+        return task
+      }) ?? null
+    }))
+  },
 }))
 
 export function userData(data: UserType) {

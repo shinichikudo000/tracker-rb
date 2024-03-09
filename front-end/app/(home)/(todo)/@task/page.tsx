@@ -1,7 +1,7 @@
 'use client'
 import { getTasks, postTask } from "@/app/_helper-functions/api"
-import { useTodoStore, useUserStore } from "@/app/_helper-functions/store"
-import { useEffect, useState } from "react"
+import { useTaskStore, useTodoStore, useUserStore } from "@/app/_helper-functions/store"
+import { useEffect, useMemo, useState } from "react"
 import {
     Dialog,
     DialogContent,
@@ -52,7 +52,8 @@ export default function TaskPage() {
     const token = useUserStore((state) => state.token)
     const [open, setOpen] = useState(false)
     const categories = useTodoStore((state) => state.categories)
-    const [tasks, setTasks] = useState<TaskType[]>([])
+    const setTasks = useTaskStore((state) => state.setTasks)
+    const tasks = useTaskStore((state) => state.tasks)
     useEffect(() => {
         const fetchData = async () => {
             if (token) {
@@ -205,7 +206,9 @@ export default function TaskPage() {
                 </Dialog>
             </div>
             <div className="w-full h-full p-4">
-                <DataTable columns={columns} data={tasks} />
+                {
+                    tasks && <DataTable columns={columns} data={tasks} />
+                }
             </div>
         </div>
     )
