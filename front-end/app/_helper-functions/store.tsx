@@ -38,6 +38,11 @@ export const useTaskStore = create<TaskStore>((set) => ({
       }) ?? null
     }))
   },
+  deleteTask: (taskId) => {
+    set((state) => ({
+      tasks: state.tasks?.filter((task) => task.id !== taskId)
+    }))
+  },
 }))
 
 export function userData(data: UserType) {

@@ -7,7 +7,7 @@ import { Button } from "./button"
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu"
 import { useTaskStore, useUserStore } from "@/app/_helper-functions/store"
-import { completedTask, notCompletedTask } from "@/app/_helper-functions/api"
+import { completedTask, deleteTask, notCompletedTask } from "@/app/_helper-functions/api"
 
 export const columns: ColumnDef<TaskType>[] = [
   {
@@ -112,6 +112,7 @@ export const columns: ColumnDef<TaskType>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const taskId = row.original.id
+      const token = useUserStore((state) => state.token)
 
       return (
         <DropdownMenu>
@@ -124,8 +125,29 @@ export const columns: ColumnDef<TaskType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {console.log(taskId)}}>Edit</DropdownMenuItem> 
-            <DropdownMenuItem onClick={() => {}}>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={async() => {
+              try {
+                
+              } catch(e) {
+                console.log(e)
+              }
+            }}>Edit</DropdownMenuItem> 
+            <DropdownMenuItem onClick={async() => {
+              try {
+                if(token) {
+                  const res = await deleteTask(token, taskId)
+                  if(res.ok) {
+                    
+                  } else {
+
+                  }
+                } else {
+
+                }
+              } catch(e) {
+                console.log(e)
+              }
+            }}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       )

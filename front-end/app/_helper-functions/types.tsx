@@ -88,7 +88,8 @@ export interface TaskStore {
     tasks: TaskType[] | null;
     setTasks: (tasks: TaskType[]) => void;
     setCompletedTask: (taskId: number) => void;
-    setNotCompletedTask: (taskId: number) => void
+    setNotCompletedTask: (taskId: number) => void;
+    deleteTask: (taskId: number) => void
 }
 
   

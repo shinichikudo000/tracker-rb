@@ -160,7 +160,7 @@ export async function notCompletedTask(token: string, taskId: number) {
     return res
 }
 
-export async function editTask(taskId: number, token: string, values: any){
+export async function editTask(token: string, taskId: number, values: any){
     const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "PUT",
         headers: {
@@ -172,7 +172,7 @@ export async function editTask(taskId: number, token: string, values: any){
     return res
 }
 
-export async function deleteTask(taskId: number, token: string){
+export async function deleteTask(token: string, taskId: number){
     const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
