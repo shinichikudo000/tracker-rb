@@ -22,6 +22,23 @@ export default function SidebarItem({
             resource_owner: null
         }))
     }
+    // async function handleLogout() {
+    //     try {
+    //         const res = await
+    //         if(res.ok) {
+    //             useUserStore.setState((prevState) => ({
+    //                 ...prevState,
+    //                 token: null,
+    //                 refresh_token: null,
+    //                 resource_owner: null
+    //             }))
+    //         } else {
+                
+    //         }
+    //     } catch(e) {
+    //         console.log(e)
+    //     }
+    // }
     return (
         <Link href={href} onClick={label === 'Log Out' ? handleLogout : undefined} className={twMerge(`
             flex

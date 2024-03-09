@@ -5,7 +5,6 @@ import { useTodoStore, useUserStore } from "@/app/_helper-functions/store"
 import { CategoryFormSchema, CategoryType } from "@/app/_helper-functions/types"
 import CategoryItem from "@/components/ui/CategoryItem"
 import { Accordion } from "@/components/ui/accordion"
-import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
     Dialog,
@@ -21,18 +20,23 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
   
 
 export default function CategoryPage() {
     const token = useUserStore((state) => state.token)
     const categories = useTodoStore((state) => state.categories)
     const setCategories = useTodoStore((state) => state.setCategories)
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
+
+    const { toast } = useToast()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,6 +46,7 @@ export default function CategoryPage() {
                     if (res.ok) {
                         const data = await res.json()
                         setCategories(data)
+                        console.log(data)
                     } else {
                         throw new Error(`Failed to sign in: ${res.status}`)
                     }
@@ -68,6 +73,10 @@ export default function CategoryPage() {
                     const data = await res.json()
                     useSetCategory(data)
                     setOpen(false)
+                    toast({
+                        title: "New Category",
+                        description: "Successfully created new category",
+                    })
                 } else {
 
                 }
@@ -94,6 +103,7 @@ export default function CategoryPage() {
                                     name="name"
                                     render={({ field }) => (
                                     <FormItem>
+                                        <FormLabel>Category</FormLabel>
                                         <FormControl>
                                             <Input type="text" placeholder="category name" {...field} className="bg-transparent w-full text-lg"/>
                                         </FormControl>
@@ -101,6 +111,7 @@ export default function CategoryPage() {
                                     </FormItem>
                                     )}
                                 />
+                                <Button type="submit">Submit</Button>
                             </form>
                         </Form>
                     </DialogContent>

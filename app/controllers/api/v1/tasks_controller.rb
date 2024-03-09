@@ -1,19 +1,17 @@
 class Api::V1::TasksController < ApplicationController
   before_action :user
-  before_action :set_category
+  before_action :set_category, only: %i[ create ]
   before_action :set_task, only: %i[ show update destroy ]
 
   # GET /categories/:id/tasks
   def index
-    def index
-      if params[:category_id]
-        category = Category.find(params[:category_id])
-        @tasks = category.tasks
-      else
-        @tasks = Task.all
-      end
-      render json: @tasks
+    if params[:category_id]
+      category = Category.find(params[:category_id])
+      @tasks = category.tasks
+    else
+      @tasks = Task.all
     end
+    render json: @tasks
   end
 
   # GET /categories/:id/tasks/1
@@ -24,9 +22,10 @@ class Api::V1::TasksController < ApplicationController
   # POST /categories/:id/tasks
   def create
     @task = @category.tasks.build(task_params)
+    @task.user_id = @user.id
 
     if @task.save
-      render json: @task, status: :created, location: @task
+      render json: @task, status: :created, location: api_v1_tasks_url(@task)
     else
       render json: @task.errors, status: :unprocessable_entity
     end
@@ -67,6 +66,6 @@ class Api::V1::TasksController < ApplicationController
     
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:description, :due_date, :completed)
+      params.require(:task).permit(:description, :due_date, :completed, :category_id)
     end
 end

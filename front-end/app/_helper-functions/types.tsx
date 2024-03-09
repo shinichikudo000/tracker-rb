@@ -1,18 +1,27 @@
 import { string, z } from "zod"
 
 export const signInFormSchema = z.object({
-    email: z.string(),
+    email: z.string().email(),
     password: z.string(),
 })
 
 export const signUpFormSchema = z.object({
-    email: z.string(),
+    email: z.string().email(),
     password: z.string(),
     'confirm-password': z.string()
 })
 
 export const CategoryFormSchema = z.object({
     name: z.string(),
+})
+
+export const TaskFormSchema = z.object({
+    category_id: z.string(),
+    description: z.string(),
+    completed: z.boolean(),
+    due_date: z.date({
+        required_error: "Due date is required",
+    })
 })
 
 export interface UserType {
