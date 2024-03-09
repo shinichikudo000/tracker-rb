@@ -1,7 +1,7 @@
 'use client'
 
 import { deleteCategory, editCategory } from "@/app/_helper-functions/api"
-import { useTodoStore, useUserStore } from "@/app/_helper-functions/store"
+import { useTaskStore, useTodoStore, useUserStore, filterTasksUnderCategory } from "@/app/_helper-functions/store"
 import { CategoryFormSchema, CategoryType } from "@/app/_helper-functions/types"
 import { Input } from "@/components/ui/input"
 import {
@@ -22,12 +22,19 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { IoMdClose } from "react-icons/io"
+import { columns } from "./columns"
+import { DataTable } from "./data-table"
+import AddNewTaskForm from "./AddNewTaskForm"
   
 export default function CategoryItem({category} : {category: CategoryType}) {
     const token = useUserStore((state) => state.token)
     const useDeleteCategory = useTodoStore((state) => state.deleteCategory)
     const useEditCategory = useTodoStore((state) => state.editCategory)
     const [edit, setEdit] = useState(false)
+    const tasks = useTaskStore((state) => state.tasks)
+    const tasksUnderCategory = tasks ? filterTasksUnderCategory(tasks, category.id) : []
+
+    
     const form = useForm<z.infer<typeof CategoryFormSchema>>({
         resolver: zodResolver(CategoryFormSchema),
         defaultValues: {
@@ -97,7 +104,14 @@ export default function CategoryItem({category} : {category: CategoryType}) {
                 </div>
             </AccordionTrigger>
             <AccordionContent>
-                Yes. It adheres to the WAI-ARIA design pattern.
+                {
+                    tasks && tasksUnderCategory && (
+                        <div className="flex flex-col gap-4">
+                            <AddNewTaskForm category={category} />
+                            <DataTable columns={columns} data={tasksUnderCategory} />
+                        </div>
+                    )
+                }
             </AccordionContent>
         </AccordionItem>
     )

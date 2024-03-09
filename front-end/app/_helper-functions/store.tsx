@@ -6,12 +6,14 @@ export const useUserStore = create<UserType>(() => ({
   token: null,
   refresh_token: null,
   resource_owner: null,
-  //logOutUser: () => set(() => {user: null})
 }))
 
 export const useTaskStore = create<TaskStore>((set) => ({
   tasks: null,
   setTasks: (tasks) => set({ tasks }),
+  setNewTask: (newTasks) => set((state) => ({
+    tasks: state.tasks ? [...state.tasks, newTasks] : [newTasks],
+  })),
   setCompletedTask: (taskId) => {
     set((state) => ({
       tasks: state.tasks?.map((task) => {
@@ -44,6 +46,11 @@ export const useTaskStore = create<TaskStore>((set) => ({
     }))
   },
 }))
+
+export const filterTasksUnderCategory = (tasks: TaskType[], categoryId: number) => {
+  if (!tasks) return []
+  return tasks.filter((task) => task.category_id === categoryId);
+}
 
 export function userData(data: UserType) {
   useUserStore.setState((prevState) => ({

@@ -1,7 +1,7 @@
 'use client'
 
-import { getCategories, postCategory } from "@/app/_helper-functions/api"
-import { useTodoStore, useUserStore } from "@/app/_helper-functions/store"
+import { getCategories, getTasks, postCategory } from "@/app/_helper-functions/api"
+import { useTaskStore, useTodoStore, useUserStore } from "@/app/_helper-functions/store"
 import { CategoryFormSchema, CategoryType } from "@/app/_helper-functions/types"
 import CategoryItem from "@/components/ui/CategoryItem"
 import { Accordion } from "@/components/ui/accordion"
@@ -34,6 +34,7 @@ export default function CategoryPage() {
     const token = useUserStore((state) => state.token)
     const categories = useTodoStore((state) => state.categories)
     const setCategories = useTodoStore((state) => state.setCategories)
+    const setTasks = useTaskStore((state) => state.setTasks)
     const [open, setOpen] = useState(false)
 
     const { toast } = useToast()
@@ -42,13 +43,15 @@ export default function CategoryPage() {
         const fetchData = async () => {
             if (token) {
                 try {
-                    const res = await getCategories(token)
-                    if (res.ok) {
-                        const data = await res.json()
-                        setCategories(data)
-                        console.log(data)
+                    const resCategories = await getCategories(token)
+                    const resTasks = await getTasks(token)
+                    if (resCategories.ok && resTasks) {
+                        const dataCategories = await resCategories.json()
+                        const dataTasks = await resTasks.json()
+                        setCategories(dataCategories)
+                        setTasks(dataTasks)
                     } else {
-                        throw new Error(`Failed to sign in: ${res.status}`)
+                        throw new Error(`Failed to sign in: ${resCategories.status} ${resTasks.status}`)
                     }
                 } catch (e) {
                     console.log(e)
@@ -58,6 +61,7 @@ export default function CategoryPage() {
 
         fetchData()
     }, [])
+
 
     const form = useForm<z.infer<typeof CategoryFormSchema>>({
         resolver: zodResolver(CategoryFormSchema),
@@ -129,3 +133,7 @@ export default function CategoryPage() {
 function useSetCategory(data: any) {
     throw new Error("Function not implemented.")
 }
+function setTasks(data: any) {
+    throw new Error("Function not implemented.")
+}
+
