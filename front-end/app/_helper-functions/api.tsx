@@ -181,3 +181,14 @@ export async function deleteTask(token: string, taskId: number){
     })
     return res
 }
+
+export async function getTodayTasks(token: string, date: any){
+    const res = await fetch(`${API_URL}/tasks?date=${date}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    })
+    return res
+}

@@ -8,6 +8,9 @@ class Api::V1::TasksController < ApplicationController
     if params[:category_id]
       category = Category.find(params[:category_id])
       @tasks = category.tasks
+    elsif params[:date].present?
+      date = Date.parse(params[:date])
+      @tasks = Task.where(due_date: date)
     else
       @tasks = Task.all
     end

@@ -10,7 +10,12 @@ export const useUserStore = create<UserType>(() => ({
 
 export const useTaskStore = create<TaskStore>((set) => ({
   tasks: null,
+  todayTasks: null,
   setTasks: (tasks) => set({ tasks }),
+  setTodayTasks: (tasks) => set((state) => ({ 
+    ...state, 
+    todayTasks: tasks, 
+  })),
   setNewTask: (newTasks) => set((state) => ({
     tasks: state.tasks ? [...state.tasks, newTasks] : [newTasks],
   })),

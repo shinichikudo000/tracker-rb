@@ -5,7 +5,7 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     navigationMenuTriggerStyle,
-  } from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu"
 import React, { useState } from "react"
 
 export default function TodoLayout({
@@ -27,7 +27,7 @@ export default function TodoLayout({
                     <NavigationMenuList>
                         <NavigationMenuItem>
                             <button className={`${show === 'category' ? showButtonStyle : ''}`} onClick={() => setShow('category')}>
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>Categories</NavigationMenuLink>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()}>Categories</NavigationMenuLink>
                             </button>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
