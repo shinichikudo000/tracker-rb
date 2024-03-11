@@ -1,9 +1,9 @@
+'use client'
 import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { format,  parseISO } from "date-fns"
-
 import {
     Popover,
     PopoverContent,
@@ -23,48 +23,50 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
   } from "@/components/ui/dialog"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { TaskFormSchema, TaskType } from "@/app/_helper-functions/types"
+import { EditTaskFormSchema, TaskType } from "@/app/_helper-functions/types"
 import { toast } from "@/components/ui/use-toast"
-import { postTask } from "@/app/_helper-functions/api"
-import { useTaskStore, useTodoStore, useUserStore } from "@/app/_helper-functions/store"
-import { useState } from "react"
+import { editTask } from "@/app/_helper-functions/api"
+import { useTaskStore, useUserStore } from "@/app/_helper-functions/store"
 
-export default function EditTaskForm({task, open, setOpen} : {task: TaskType, open?: boolean, setOpen: any }) {
+
+export default function EditTaskForm({task, open, setOpen} : {task: TaskType, open?: boolean, setOpen?: any }) {
     const token = useUserStore((state) => state.token)
-    const setNewTask = useTaskStore((state) => state.setNewTask)
+    const editTaskStore = useTaskStore((state) => state.editTask)
 
-    async function onSubmit(values: z.infer<typeof TaskFormSchema>) {
+    async function onSubmit(values: z.infer<typeof EditTaskFormSchema>) {
         try {
             if(token) {
-    
-                const res = await postTask(token, values);
+                const res = await editTask(token, task.id, values)
                 if(res.ok) {
                     const data = await res.json()
-                    setNewTask(data)
+                    editTaskStore(task.id, data)
                     console.log(data)
                     toast({
                         title: "New Task",
                         description: "Successfully created new task",
                     })
+                    setOpen(!open)
                 } else {
 
                 }
             } else {
 
             }
-        } catch(e) {
+        } catch(e: any) {
             console.log(e)
+            toast({
+                title: "An error occured",
+                description: `Error: ${e.message}`,
+            })
         }
     }
-    const form = useForm<z.infer<typeof TaskFormSchema>>({
-        resolver: zodResolver(TaskFormSchema),
+    const form = useForm<z.infer<typeof EditTaskFormSchema>>({
+        resolver: zodResolver(EditTaskFormSchema),
         defaultValues: {
             description: task.description,
             due_date: parseISO(task.due_date)
@@ -130,7 +132,7 @@ export default function EditTaskForm({task, open, setOpen} : {task: TaskType, op
                                     </PopoverContent>
                                 </Popover>
                                 <FormDescription>
-                                    Don't let your procrastination gets you!
+                                    Don't let your procrastination hinder you!!
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>

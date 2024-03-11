@@ -1,6 +1,6 @@
 import { formatISO } from "date-fns";
 import { useUserStore } from "./store";
-import { CategoryFormSchema, TaskFormSchema, signInFormSchema } from "./types";
+import { CategoryFormSchema, EditTaskFormSchema, TaskFormSchema, signInFormSchema } from "./types";
 import { z } from "zod"
 
 export const API_URL_SIGN_IN = 'http://127.0.0.1:4000/users/tokens/sign_in'
@@ -146,7 +146,6 @@ export async function completedTask(token: string, taskId: number) {
 }
 
 export async function notCompletedTask(token: string, taskId: number) {
-    
     const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "PUT",
         headers: {
@@ -160,7 +159,7 @@ export async function notCompletedTask(token: string, taskId: number) {
     return res
 }
 
-export async function editTask(token: string, taskId: number, values: any){
+export async function editTask(token: string, taskId: number, values: z.infer<typeof EditTaskFormSchema>){
     const res = await fetch(`${API_URL}/tasks/${taskId}`, {
         method: "PUT",
         headers: {

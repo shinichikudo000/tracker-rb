@@ -45,6 +45,19 @@ export const useTaskStore = create<TaskStore>((set) => ({
       tasks: state.tasks?.filter((task) => task.id !== taskId)
     }))
   },
+  editTask: (taskId, values) => {
+    set((state) => ({
+      tasks: state.tasks?.map((task) => {
+        if (task.id === taskId) {
+          return {
+            ...task,
+            ...values
+          }
+        }
+        return task
+      }) ?? null
+    }))
+  }
 }))
 
 export const filterTasksUnderCategory = (tasks: TaskType[], categoryId: number) => {

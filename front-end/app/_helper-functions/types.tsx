@@ -25,6 +25,11 @@ export const TaskFormSchema = z.object({
     })
 })
 
+export const EditTaskFormSchema = z.object({
+    description: z.string(),
+    due_date: z.date()
+})
+
 export interface UserType {
     token?: string | null;
     refresh_token?: string | null;
@@ -90,7 +95,8 @@ export interface TaskStore {
     setTasks: (tasks: TaskType[]) => void
     setCompletedTask: (taskId: number) => void;
     setNotCompletedTask: (taskId: number) => void;
-    deleteTask: (taskId: number) => void
+    deleteTask: (taskId: number) => void;
+    editTask: (taskId: number, values: TaskType) => void
 }
 
   
