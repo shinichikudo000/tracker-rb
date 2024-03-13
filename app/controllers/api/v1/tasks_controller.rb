@@ -5,7 +5,7 @@ class Api::V1::TasksController < ApplicationController
 
   # GET /categories/:id/tasks
   def index
-    if params[:category_id]
+    if params[:category_id].present?
       category = Category.find(params[:category_id])
       @tasks = category.tasks
     elsif params[:date].present?
