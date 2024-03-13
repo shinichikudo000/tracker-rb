@@ -48,3 +48,7 @@ end
 
 gem "devise", "~> 4.9"
 gem "devise-api", "~> 0.1.3"
+
+group :development, :test do
+  gem 'rspec-rails', '~> 5.0'
+end

@@ -52,7 +52,7 @@ class Api::V1::CategoriesController < ApplicationController
     def set_category
       @category = @user.categories.find(params[:id])
     end
-
+ 
     # Only allow a list of trusted parameters through.
     def category_params
       params.require(:category).permit(:name)
