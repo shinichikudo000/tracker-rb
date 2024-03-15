@@ -58,7 +58,7 @@ class Api::V1::TasksController < ApplicationController
         render json: { error: 'Invalid token' }, status: :unprocessable_entity
       end
     end
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_task
       @task = @user.tasks.find(params[:id])
     end
@@ -67,7 +67,7 @@ class Api::V1::TasksController < ApplicationController
       @category = @user.categories.find(params[:category_id])
     end
     
-    # Only allow a list of trusted parameters through.
+
     def task_params
       params.require(:task).permit(:description, :due_date, :completed, :category_id)
     end

@@ -48,12 +48,11 @@ class Api::V1::CategoriesController < ApplicationController
         render json: { error: 'Invalid token' }, status: :unprocessable_entity
       end
     end
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_category
       @category = @user.categories.find(params[:id])
     end
- 
-    # Only allow a list of trusted parameters through.
+
     def category_params
       params.require(:category).permit(:name)
     end
