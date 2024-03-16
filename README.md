@@ -28,29 +28,6 @@ Task Tracker is a web application designed to help users track their future task
 6. Configure the application to connect frontend and backend.
 7. Run the application locally using `npm start` or `yarn start`.
 
-## Contributors
-- [Your Name]
-- [Your Email]
-- [Your GitHub Profile]
-
-## License
-This project is licensed under the [License Name] License - see the [LICENSE.md](LICENSE.md) file for details.
-You can copy and paste this content into your README.md file in your GitHub repository. Make sure to replace placeholders like [Your Name], [Your Email], [Your GitHub Profile], and [License Name] with your actual information.
-
-
-
-
-User
-You
-i mean in md file
-ChatGPT
-ChatGPT
-Absolutely! Below is the content formatted as a Markdown file (README.md):
-
-markdown
-Copy code
-# Task Tracker
-
 ## Description
 Task Tracker is a web application designed to help users track their future tasks categorized under different categories. The application consists of a Ruby API backend paired with a React frontend built using Next.js framework. Users can create an account, manage categories, create tasks, and mark tasks as completed or undo them.
 
