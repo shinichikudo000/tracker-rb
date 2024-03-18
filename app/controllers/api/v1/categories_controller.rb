@@ -1,10 +1,10 @@
 class Api::V1::CategoriesController < ApplicationController
-  before_action :user
+  before_action :current_user
   before_action :set_category, only: %i[show update destroy]
 
   # GET /categories
   def index
-    @categories = @user.categories
+    @categories = current_user.categories
     render json: @categories
   end
 
@@ -15,7 +15,7 @@ class Api::V1::CategoriesController < ApplicationController
 
   # POST /categories
   def create
-    @category = @user.categories.new(category_params)
+    @category = current_user.categories.new(category_params)
 
     if @category.save
       render json: @category, status: :created, location: api_v1_categories_url(@category)
@@ -39,18 +39,8 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   private
-    def user
-      token = current_devise_api_token
-      user_id = token['resource_owner_id']
-      @user = User.find_by(id: user_id)
-
-      if @user.nil?
-        render json: { error: 'Invalid token' }, status: :unprocessable_entity
-      end
-    end
-
     def set_category
-      @category = @user.categories.find(params[:id])
+      @category = current_user.categories.find(params[:id])
     end
 
     def category_params
